@@ -1,13 +1,32 @@
-//basic http server
 package main
+
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 )
+
 func main() {
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, "Welcome to the API!")
+
+	mux := http.NewServeMux()
+
+	mux.HandleFunc("GET /users", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		
+		json.NewEncoder(w).Encode(map[string]string{
+			"message": "Fetched users",
+		})
 	})
-	fmt.Println("🚀 Server running on port 8080")
-	http.ListenAndServe(":8080", nil)
+	
+	mux.HandleFunc("POST /users", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		var body map[string]string
+		json.NewDecoder(r.Body).Decode(&body)
+		json.NewEncoder(w).Encode(map[string]string{
+			"message": "User received",
+			"name":    body["name"],
+		})
+	})
+	fmt.Println("🚀 Router running on port 8080")
+	http.ListenAndServe(":8080", mux)
 }
