@@ -1,21 +1,32 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
-	"server/internal/router"
 )
 
 func main() {
 
-	r := router.Setup()
+	mux := http.NewServeMux()
 
-
-	fmt.Println("🚀 Server running on http://localhost:8080")
+	mux.HandleFunc("GET /users", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		
+		json.NewEncoder(w).Encode(map[string]string{
+			"message": "Fetched users",
+		})
+	})
 	
-
-	err := http.ListenAndServe(":8080", r)
-	if err != nil {
-		fmt.Printf("Server failed: %s\n", err)
-	}
+	mux.HandleFunc("POST /users", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		var body map[string]string
+		json.NewDecoder(r.Body).Decode(&body)
+		json.NewEncoder(w).Encode(map[string]string{
+			"message": "User received",
+			"name":    body["name"],
+		})
+	})
+	fmt.Println("🚀 Router running on port 8080")
+	http.ListenAndServe(":8080", mux)
 }
