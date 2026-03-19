@@ -1,18 +1,31 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"net/http"
-	
+	"os"
+	//db -> changes to main, db.go, env and router.go
+	"github.com/joho/godotenv"
 	"server/internal/connection"
 	"server/internal/router"
 )
 
 func main() {
-	db := database.InitDB()
-	defer db.Close()
-	r := router.Setup()
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
 
-	fmt.Println("🚀 Server running on http://localhost:8080")
-	http.ListenAndServe(":8080", r)
+	dsn := os.Getenv("DB_URL")
+	if dsn == "" {
+		log.Fatal("DB_URL not found in .env")
+	}
+
+	db := database.InitDB(dsn)
+	defer db.Close()
+	r := router.Setup(db)
+	port := os.Getenv("PORT")
+	
+	log.Printf("🚀 Server starting on port %s", port)
+	http.ListenAndServe(":"+port, r)
 }
