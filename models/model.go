@@ -2,6 +2,7 @@ package models
 
 import(
 	"time"
+	"github.com/google/uuid"
 )
 
 type User struct {
@@ -15,4 +16,5 @@ type Todo struct {
 	Task string `json:"task"`
 	Done bool   `json:"done"`
 	CreatedAt time.Time `json:"createdAt"`
+	UserId  uuid.UUID `json:"userID"`
 }

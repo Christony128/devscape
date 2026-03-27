@@ -7,10 +7,11 @@ import(
 
 func CreateTable(db *sql.DB){
 	_,err:=db.Exec(`CREATE TABLE IF NOT EXISTS tasks(
-	    ID SERIAL PRIMARY KEY,
-		Task TEXT NOT NULL,
-		Done BOOLEAN DEFAULT FALSE,
-		CreatedAt TIMESTAMP  DEFAULT CURRENT_TIMESTAMP
+	    id SERIAL PRIMARY KEY,
+		task TEXT NOT NULL,
+		done BOOLEAN DEFAULT FALSE,
+		createdat TIMESTAMP  DEFAULT CURRENT_TIMESTAMP
+		userID UUID REFERENCES users(id)
 	);`)
 
 	if err!=nil{
