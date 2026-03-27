@@ -1,5 +1,8 @@
 package main 
-
+//model.go - added user id in ToDo struct
+//route.go - added routes for register and login
+//handler.go - added handler functions for register and login
+//DROP TASKS AND USERS TABLES
 import (
 	"net/http"
 	"devscape/config"
