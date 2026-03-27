@@ -5,10 +5,12 @@ import (
 	"devscape/config"
 	"devscape/handlers"
 	"devscape/routes"
+	"github.com/joho/godotenv"
 	"fmt"
 )
 
 func main(){
+	godotenv.Load()
 	db:=config.ConnectDB()
 	config.CreateTable(db)
 	h:=&handlers.Handler{DB:db}
