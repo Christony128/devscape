@@ -8,9 +8,9 @@ import(
 )
 
 func ConnectDB() *sql.DB{
-	// connectionStr :="postgres://postgres:postgres@localhost:5432/todoapp"
+	connectionStr :="postgres://postgres:postgres@localhost:5432/todoapp"
 	// connectionStr :="postgres://postgres:root@localhost:5433/test?sslmode=disable"
-	connectionStr := os.Getenv("DB_URL")
+
 
 	//this DB returned here is a pool of zero or more underlying connections and its safe for concurrent use by multiple go routines
 	db,err:=sql.Open("pgx",connectionStr)
