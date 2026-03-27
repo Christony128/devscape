@@ -18,8 +18,8 @@ func CreateTable(db *sql.DB){
 	}
 
 	_,err=db.Exec(`CREATE TABLE IF NOT EXISTS users (
-	    id TEXT PRIMARY KEY,
-		username TEXT,
+	    id SERIAL PRIMARY KEY,
+		username TEXT UNIQUE NOT NULL,
 		password TEXT
 	);`)
 

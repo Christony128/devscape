@@ -5,9 +5,9 @@ import(
 )
 
 type User struct {
-  ID string `json:”user_id”`
-  username string `json:”username”`
-  password string `json:”password”`
+  ID int64 `json:"user_id"`
+  Username string `json:"username"`
+  Password string `json:"password"`
 }
 
 type Todo struct {
