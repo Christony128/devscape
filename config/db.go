@@ -2,7 +2,6 @@ package config
 
 import(
 	"log"
-	"os"
 	"database/sql"
 	_ "github.com/jackc/pgx/v5/stdlib"
 )
