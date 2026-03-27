@@ -2,6 +2,8 @@ package routes
 
 import (
     "devscape/handlers"
+    "devscape/middleware" //MIDDLEWARE
+    "net/http" //MIDDLEWARE
     "github.com/gorilla/mux"
 )
 
@@ -19,9 +21,9 @@ func SetupRoutes(h *handlers.Handler) *mux.Router {
     r.HandleFunc("/login", h.Login).Methods("POST")//auth
 
     
-    r.HandleFunc("/todos", h.PostTask).Methods("POST")
-    r.HandleFunc("/todos", h.GetTasks).Methods("GET")
-	r.HandleFunc("/todos/{id}/done",h.MarkDone).Methods("PATCH")
-	r.HandleFunc("/todos/{id}",h.DeleteTask).Methods("DELETE")
+    r.Handle("/todos", middleware.AuthMiddleware(http.HandlerFunc(h.PostTask))).Methods("POST") //middleware
+	r.Handle("/todos", middleware.AuthMiddleware(http.HandlerFunc(h.GetTasks))).Methods("GET")  //middleware
+	r.Handle("/todos/{id}/done", middleware.AuthMiddleware(http.HandlerFunc(h.MarkDone))).Methods("PATCH") //middleware
+	r.Handle("/todos/{id}", middleware.AuthMiddleware(http.HandlerFunc(h.DeleteTask))).Methods("DELETE")    //middleware
     return r
 }
